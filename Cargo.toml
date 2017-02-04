@@ -1,0 +1,7 @@
+[package]
+name = "gb"
+version = "0.1.0"
+authors = ["TJ Cole <gamester4433@gmail.com>"]
+
+[dependencies]
+rand = "0.3"
