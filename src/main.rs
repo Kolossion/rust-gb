@@ -25,25 +25,16 @@ fn main() {
 
   let mut bytecount = 0;
 
-  println!("{:?}", cpu);
-
   for val in boot_data {
     bytecount += 1;
-    cpu.set_a(between.ind_sample(&mut rng));
-    cpu.set_e(between.ind_sample(&mut rng));
-    cpu.ADDr_e();
-    println!("CPU STATUS: {:?}", cpu);
+    cpu.set_reg_8("a", between.ind_sample(&mut rng));
+    cpu.set_reg_8("e", between.ind_sample(&mut rng));
+    cpu.add_e();
   }
 
   let addresult = alu::add_8( 25, 10 );
 
-  println!("");
-
-  println!("ALU RESULT: {:?}", addresult);
-
-  println!("");
-
-  println!("BYTECOUNT: {}", bytecount);
+  println!("Ya'll good, foo.");
 }
 
 fn read_bin<P: AsRef<Path>>(path: P) -> Vec<u8> {
