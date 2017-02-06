@@ -1,1 +1,1 @@
-* Rust GB Emulator *
+# Rust GB Emulator #
