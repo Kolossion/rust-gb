@@ -1,4 +1,6 @@
-use super::*;
+// Tests for CPU file.
+
+use super::CPU;
 
 #[test]
 fn set_8bit_reg() {

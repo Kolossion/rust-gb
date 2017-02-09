@@ -5,8 +5,8 @@ pub mod alu;
 
 #[derive(Debug)]
 struct CPUClock {
-  m: u8,
-  t: u8,
+  m: u32,
+  t: u32,
 }
 
 #[derive(Debug)]
@@ -33,12 +33,20 @@ pub struct CPU {
 
 impl CPU {
 
-  // Given an opcode, run the appropriate things.
-
   pub fn run_op(&mut self, opcode: u16) {
     println!("UNIMPLEMENTED");
 
   }
+
+  // pub fn get_dual_reg_16(&mut self, reg1: &str, reg2: &str) -> u16 {
+
+    // let top_half = self.get_reg_8(reg1);
+    // let bottom_half = self.get_reg_8(reg2);
+    // let ret_val : u16 = 0;
+
+    // top_half <<= 8;
+
+  // }
 
   pub fn get_reg_8(&mut self, reg: &str) -> u8 {
     match reg.as_ref() {
@@ -52,7 +60,7 @@ impl CPU {
       "f" => return self.reg.f,
       "m" => return self.reg.m,
       "t" => return self.reg.t,
-      _   => panic!("GB-Z80: Cannot get value of unknown register"),
+      _   => panic!("[GB-Z80]: Cannot get value of unknown register"),
     }
   }
 
@@ -64,18 +72,33 @@ impl CPU {
       "c" => self.reg.c = val as u8,
       "d" => self.reg.d = val as u8,
       "e" => self.reg.e = val as u8,
-      "h" => self.reg.e = val as u8,
-      "l" => self.reg.e = val as u8,
-      "f" => self.reg.e = val as u8,
-      "m" => self.reg.e = val as u8,
-      "t" => self.reg.e = val as u8,
+      "h" => self.reg.h = val as u8,
+      "l" => self.reg.l = val as u8,
+      "f" => self.reg.f = val as u8,
+      "m" => self.reg.m = val as u8,
+      "t" => self.reg.t = val as u8,
       _   => panic!("[GB-Z80]: Cannot set value of unknown register"),
     }
     
   }
 
+  pub fn boot(&mut self) {
+    println!("UNIMPLEMENTED");
+    // TODO
+  }
+
   pub fn add_e(&mut self) {
     let add_res = alu::add_8(self.reg.a, self.reg.e);
+    let (overflow, zero, sum) = add_res;
+    self.reg.a = sum;
+    self.reg.f |= if overflow { 0x80 } else { 0x00 };
+    self.reg.f |= if zero { 0x10 } else { 0x00 };
+    self.reg.m = 1;
+    self.reg.t = 4;
+  }
+
+  pub fn add_d(&mut self) {
+    let add_res = alu::add_8(self.reg.a, self.reg.d);
     let (overflow, zero, sum) = add_res;
     self.reg.a = sum;
     self.reg.f |= if overflow { 0x80 } else { 0x00 };
